@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Precios de la Canasta Familiar - Colombia</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+
+<h2>Precios de la Canasta Familiar</h2>
+<p>Fuente: DANE – SIPSA</p>
+
+<div id="grafico" style="width:90%;max-width:900px;"></div>
+
+<script>
+fetch("data.csv")
+  .then(response => response.text())
+  .then(text => {
+    const filas = text.split("\n").slice(1);
+    let fechas = [];
+    let precios = [];
+
+    filas.forEach(f => {
+      const c = f.split(",");
+      fechas.push(c[0]);
+      precios.push(Number(c[5]));
+    });
+
+    Plotly.newPlot("grafico", [{
+      x: fechas,
+      y: precios,
+      type: "scatter",
+      mode: "lines+markers"
+    }], {
+      title: "Evolución del precio"
+    });
+  });
+</script>
+
+</body>
+</html>
